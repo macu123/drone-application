@@ -19,6 +19,7 @@ class Engine
   end
 
   def set_power(power)
+    return false if is_off?
     return false unless (power >= 0) && (power <= 100)
 
     @power = power
