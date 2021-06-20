@@ -81,6 +81,10 @@ class Drone
     # set orientation
   end
 
+  def sum_of_engines_power(engines_pos_arr)
+    engines_pos_arr.reduce(0) { |sum, engine_pos| sum + @engines[engine_pos].power }
+  end
+
   def reset_gyroscope_and_orientation
     @gyroscope.reset
     @orientation_sensor.reset
