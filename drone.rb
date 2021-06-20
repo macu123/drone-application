@@ -75,14 +75,8 @@ class Drone
   end
 
   def reset_gyroscope_and_orientation
-    # reset gyroscope
-    @gyroscope.x_velocity = 0
-    @gyroscope.y_velocity = 0
-    @gyroscope.z_velocity = 0
-
-    # reset orientation
-    @orientation_sensor.x_direction = nil
-    @orientation_sensor.y_direction = nil
+    @gyroscope.reset
+    @orientation_sensor.reset
   end
 
   def send_distress_signal
