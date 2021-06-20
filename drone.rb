@@ -60,6 +60,10 @@ class Drone
     set_off
   end
 
+  def turn_on_engines
+    @engines.collect(&:turn_on)
+  end
+
   private
 
   def set_engines_power(engines_arr, power)
