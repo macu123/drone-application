@@ -39,6 +39,7 @@ class Drone
       set_engines_power(engines_hash[:faster], high_power)
       set_engines_power(engines_hash[:slower], low_power)
       set_velocities_and_orientation(movement)
+      set_moving
     end
   end
 
@@ -49,10 +50,12 @@ class Drone
   def stabilize
     set_engines_power([0, 1, 2, 3], STABLE_POWER)
     reset_gyroscope_and_orientation
+    set_hovering
   end
 
   def land
     move_down(low_power: LANDING_POWER)
+    set_off
   end
 
   private
