@@ -56,6 +56,7 @@ class Drone
   # assume both drone and engines are off when landed
   def land
     move_down(low_power: LANDING_POWER)
+    reset_gyroscope_and_orientation
     @engines.collect(&:turn_off)
     set_off
   end
