@@ -68,6 +68,21 @@ class Drone
     @engines.collect(&:turn_on)
   end
 
+  def orientations
+    {
+      x: @orientation_sensor.x_direction,
+      y: @orientation_sensor.y_direction
+    }
+  end
+
+  def velocities
+    {
+      x: @gyroscope.x_velocity,
+      y: @gyroscope.y_velocity,
+      z: @gyroscope.z_velocity
+    }
+  end
+
   private
 
   def set_engines_power(engines_arr, power, direction = nil)
