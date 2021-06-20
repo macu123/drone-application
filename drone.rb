@@ -5,6 +5,8 @@ require_relative 'engine'
 class Drone
   attr_reader :status
 
+  NUMS_OF_ENGINES = 4
+
   HIGH_POWER = 100
   STABLE_POWER = 75
   LANDING_POWER = 50
@@ -25,7 +27,7 @@ class Drone
     @status = :off
     @gyroscope = Gyroscope.new
     @orientation_sensor = OrientationSensor.new
-    @engines = Array.new(4.times.map { Engine.new })
+    @engines = Array.new( NUMS_OF_ENGINES.times.map { Engine.new } )
   end
 
   STATUSES.each do |status|
@@ -38,7 +40,8 @@ class Drone
     define_method "move_#{movement}" do |high_power: HIGH_POWER, low_power: LOW_POWER|
       set_engines_power(engines_hash[:faster], high_power, movement)
       set_engines_power(engines_hash[:slower], low_power, movement)
-      set_velocities_and_orientation(movement)
+      reset_gyroscope_and_orientation
+      set_gyroscope_and_orientation(movement)
       set_moving
     end
   end
@@ -71,18 +74,38 @@ class Drone
     engines_arr.each do |index|
       engine = @engines[index]
       send_distress_signal && land && return unless engine.set_power(power) || (direction == :down)
-      send_distress_signal && return if @status == :off && !engine.set_power(power)
+      send_distress_signal && return if (@status == :off) && !engine.set_power(power)
     end
   end
 
-  def set_velocities_and_orientation(movement)
-    # set velocities
-
-    # set orientation
+  def set_gyroscope_and_orientation(movement)
+    mapping_hash = MOVEMENT_ENGINE_MAPPING[movement]
+    case movement
+    when :forward
+      @gyroscope.y_velocity = sum_of_engines_power(mapping_hash[:faster]) - sum_of_engines_power(mapping_hash[:slower])
+      @orientation_sensor.y_direction = movement
+    when :back
+      @gyroscope.y_velocity = sum_of_engines_power(mapping_hash[:slower]) - sum_of_engines_power(mapping_hash[:faster])
+      @orientation_sensor.y_direction = movement
+    when :left
+      @gyroscope.x_velocity = sum_of_engines_power(mapping_hash[:slower]) - sum_of_engines_power(mapping_hash[:faster])
+      @orientation_sensor.x_direction = movement
+    when :right
+      @gyroscope.x_velocity = sum_of_engines_power(mapping_hash[:faster]) - sum_of_engines_power(mapping_hash[:slower])
+      @orientation_sensor.x_direction = movement
+    when :up
+      @gyroscope.z_velocity = sum_of_engines_power(mapping_hash[:faster]) - sum_of_engines_power_for_stable
+    when :down
+      @gyroscope.z_velocity = sum_of_engines_power(mapping_hash[:slower]) - sum_of_engines_power_for_stable
+    end
   end
 
   def sum_of_engines_power(engines_pos_arr)
     engines_pos_arr.reduce(0) { |sum, engine_pos| sum + @engines[engine_pos].power }
+  end
+
+  def sum_of_engines_power_for_stable
+    STABLE_POWER * NUMS_OF_ENGINES
   end
 
   def reset_gyroscope_and_orientation
