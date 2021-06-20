@@ -36,8 +36,8 @@ class Drone
 
   MOVEMENT_ENGINE_MAPPING.each do |movement, engines_hash|
     define_method "move_#{movement}" do |high_power: HIGH_POWER, low_power: LOW_POWER|
-      set_engines_power(engines_hash[:faster], high_power)
-      set_engines_power(engines_hash[:slower], low_power)
+      set_engines_power(engines_hash[:faster], high_power, movement)
+      set_engines_power(engines_hash[:slower], low_power, movement)
       set_velocities_and_orientation(movement)
       set_moving
     end
@@ -67,12 +67,12 @@ class Drone
 
   private
 
-  def set_engines_power(engines_arr, power)
+  def set_engines_power(engines_arr, power, direction = nil)
     engines_arr.each do |index|
       engine = @engines[index]
-      return false unless engine.set_power(power)
+      send_distress_signal && land && return unless engine.set_power(power) || (direction == :down)
+      send_distress_signal && return if @status == :off && !engine.set_power(power)
     end
-    true
   end
 
   def set_velocities_and_orientation(movement)
