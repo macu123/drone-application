@@ -38,18 +38,21 @@ class Drone
     define_method "move_#{movement}" do |high_power: HIGH_POWER, low_power: LOW_POWER|
       set_engines_power(engines_hash[:faster], high_power)
       set_engines_power(engines_hash[:slower], low_power)
-      set_velocities(movement)
-      set_orientation(movement)
+      set_velocities_and_orientation(movement)
     end
   end
 
   def take_off
+    move_up
   end
 
   def stabilize
+    set_engines_power([0, 1, 2, 3], STABLE_POWER)
+    reset_gyroscope_and_orientation
   end
 
   def land
+    move_down(low_power: LANDING_POWER)
   end
 
   private
@@ -62,14 +65,24 @@ class Drone
     true
   end
 
-  def set_velocities(movement)
+  def set_velocities_and_orientation(movement)
+    # set velocities
+
+    # set orientation
   end
 
-  def set_orientation(movement)
+  def reset_gyroscope_and_orientation
+    # reset gyroscope
+    @gyroscope.x_velocity = 0
+    @gyroscope.y_velocity = 0
+    @gyroscope.z_velocity = 0
+
+    # reset orientation
+    @orientation_sensor.x_direction = nil
+    @orientation_sensor.y_direction = nil
   end
 
   def send_distress_signal
     puts 'Distress Signal'
   end
 end
-
