@@ -66,6 +66,10 @@ class Drone
     set_off
   end
 
+  def tap
+    stabilize
+  end
+
   def turn_on_engines
     @engines.collect(&:turn_on)
   end
