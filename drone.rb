@@ -93,6 +93,7 @@ class Drone
     end
   end
 
+  # for simplicity, we assume velocity and power are the same
   def set_gyroscope_and_orientation(movement)
     mapping_hash = MOVEMENT_ENGINE_MAPPING[movement]
     case movement
