@@ -4,12 +4,12 @@ class Engine
   STATUSES = %i[off on].freeze
 
   def initialize
-    @power = 0
-    @status = :off
+    turn_off
   end
 
   STATUSES.each do |status|
     define_method "turn_#{status}" do
+      @power = 0
       @status = status
     end
 
