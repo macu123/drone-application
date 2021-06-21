@@ -52,9 +52,7 @@ class Drone
       set_moving
 
       # for testing purpose
-      puts orientations
-      puts velocities
-      puts "status: #{status}"
+      print_all_stats
     end
   end
 
