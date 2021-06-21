@@ -70,6 +70,8 @@ class Drone
 
   # assume both drone and engines are off when landed
   def land
+    # for testing purpose
+    puts 'start to land'
     move_down(low_power: LANDING_POWER)
     reset_gyroscope_and_orientation
     @engines.collect(&:turn_off)
@@ -100,6 +102,8 @@ class Drone
   end
 
   def engines_status
+    # for testing purpose
+    puts 'engines status'
     @engines.map { |engine| engine.is_on? ? 'On' : 'Off' }
   end
 
