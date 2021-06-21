@@ -39,9 +39,20 @@ class Drone
   MOVEMENT_ENGINE_MAPPING.each do |movement, engines_hash|
     define_method "move_#{movement}" do |high_power: HIGH_POWER, low_power: LOW_POWER|
       return false unless high_power && low_power && (high_power > low_power)
+      return false if (@status == :off) && (movement != :up)
 
-      set_engines_power(engines_hash[:faster], high_power, movement)
-      set_engines_power(engines_hash[:slower], low_power, movement)
+      # one is engine break when trying to take off, the other is engine break while in the air
+      if any_engine_break? && (@status == :off)
+        send_distress_signal
+        return
+      elsif any_engine_break? && (movement != :down)
+        send_distress_signal
+        land
+        return
+      end
+
+      set_engines_power(engines_hash[:faster], high_power)
+      set_engines_power(engines_hash[:slower], low_power)
       reset_gyroscope_and_orientation
       set_gyroscope_and_orientation(movement)
       set_moving
@@ -91,11 +102,10 @@ class Drone
 
   private
 
-  def set_engines_power(engines_arr, power, direction = nil)
+  def set_engines_power(engines_arr, power)
     engines_arr.each do |index|
       engine = @engines[index]
-      send_distress_signal && land && return unless engine.set_power(power) || (direction == :down)
-      send_distress_signal && return if (@status == :off) && !engine.set_power(power)
+      engine.set_power(power)
     end
   end
 
@@ -128,6 +138,10 @@ class Drone
 
   def sum_of_engines_power_for_stable
     STABLE_POWER * NUMS_OF_ENGINES
+  end
+
+  def any_engine_break?
+    @engines.any?(&:is_off?)
   end
 
   def reset_gyroscope_and_orientation
