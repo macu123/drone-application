@@ -7,13 +7,14 @@
 
 ## How to move Drone using Engines
 - High engine power means faster speed, and low engine power means slower speed.
-- To move forward along Y axis, engine 0 and 1 should have low power while engine 2 and 3 should have high power.
-- To move backward along Y axis, engine 2 and 3 should have low power while engine 0 and 1 should have high power.
-- To move leftward along X axis, engine 0 and 2 should have low power while engine 1 and 3 should have high power.
-- To move rightward along X axis, engine 1 and 3 should have low power while engine 0 and 2 should have high power.
-- To move upward along Z axis, all engines should have high power.
-- To move downward along Z axis, all engines should have low power.
-- To stabilize, all engines should have certain power because the drone has weight.
+- In order to move forward along Y axis, engine 0 and 1 should have low power while engine 2 and 3 should have high power.
+- In order to move backward along Y axis, engine 2 and 3 should have low power while engine 0 and 1 should have high power.
+- In order to move leftward along X axis, engine 0 and 2 should have low power while engine 1 and 3 should have high power.
+- In order move rightward along X axis, engine 1 and 3 should have low power while engine 0 and 2 should have high power.
+- In order to move upward along Z axis, all engines should have high power.
+- In order to move downward along Z axis, all engines should have low power.
+- In order to stabilize, all engines should have certain power between low and high because the drone has weight.
+- For simplicity, we preset those low, high, stable and landing powers.
 
 ## Reference
 https://www.youtube.com/watch?v=uFui-0sTQD0
