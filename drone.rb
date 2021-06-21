@@ -79,6 +79,8 @@ class Drone
   end
 
   def tap
+    return false if @status == :off
+
     stabilize
   end
 
@@ -101,10 +103,15 @@ class Drone
     }
   end
 
-  def engines_status
-    # for testing purpose
+  def print_engines_status
     puts 'engines status'
-    @engines.map { |engine| engine.is_on? ? 'On' : 'Off' }
+    puts @engines.map { |engine| engine.is_on? ? 'On' : 'Off' }
+  end
+
+  def print_all_stats
+    puts orientations
+    puts velocities
+    puts "status: #{status}"
   end
 
   private
