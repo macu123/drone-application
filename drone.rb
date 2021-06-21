@@ -14,6 +14,10 @@ class Drone
 
   STATUSES = %i[off hovering moving].freeze
 
+  # First element of array is the top left engine.
+  # Second element of array is the top right engine.
+  # Third element of array is the bottom left engine.
+  # Fourth elemeent of array is the bottom right engine.
   MOVEMENT_ENGINE_MAPPING = {
     forward: { faster: [2, 3], slower: [0, 1] },
     left: { faster: [1, 3], slower: [0, 2] },
@@ -35,7 +39,7 @@ class Drone
       return false unless high_power && low_power && (high_power > low_power)
       return false if (status == :off) && (movement != :up)
 
-      # one is engine break when trying to take off, the other is engine break while in the air
+      # One is engine break when trying to take off, the other is engine break while in the air.
       if any_engine_break? && (status == :off)
         send_distress_signal
         return
@@ -51,7 +55,7 @@ class Drone
       set_gyroscope_and_orientation(movement)
       set_moving
 
-      # for testing purpose
+      # For testing purpose
       print_all_stats
     end
   end
@@ -66,7 +70,7 @@ class Drone
     set_hovering
   end
 
-  # assume both drone and engines are off when landed
+  # Assume both drone and engines are off when landed.
   def land
     # for testing purpose
     puts 'start to land'
@@ -127,7 +131,11 @@ class Drone
     end
   end
 
-  # for simplicity, we assume velocity and power are the same
+  # For simplicity, we assume velocity and power are the same.
+  # X axis is left and right direction, Y axis is forward and back direction, Z axis is up and down direction.
+  # Along X axis rightwards, we assume velocity is positive, and we assume velocity is negative leftwards.
+  # Along Y axis forwards, we assume velocity is positive, and we assume velocity is negative backwards.
+  # Along Z axis upwards, we assume velocity is positive, and we assume velocity is negative downwards.
   def set_gyroscope_and_orientation(movement)
     mapping_hash = MOVEMENT_ENGINE_MAPPING[movement]
     case movement
