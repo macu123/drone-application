@@ -12,7 +12,9 @@ puts 'Tap the drone before engines turned on'
 drone.tap
 drone.print_all_stats
 
-%i[forward back left right].each do |movement|
+Drone::MOVEMENT_ENGINE_MAPPING.each_key do |movement|
+  next if movement == :up
+
   puts "Drone is trying to move #{movement} before engines turned on"
   move_method = "move_#{movement}"
   drone.send(move_method)
