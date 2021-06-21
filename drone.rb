@@ -111,9 +111,9 @@ class Drone
     end
   end
 
-  def set_engines_power(engines_arr, power)
-    engines_arr.each do |index|
-      engine = @engines[index]
+  def set_engines_power(engines_pos_arr, power)
+    engines_pos_arr.each do |pos|
+      engine = @engines[pos]
       engine.set_power(power)
     end
   end
@@ -142,7 +142,7 @@ class Drone
   end
 
   def sum_of_engines_power(engines_pos_arr)
-    engines_pos_arr.reduce(0) { |sum, engine_pos| sum + @engines[engine_pos].power }
+    engines_pos_arr.reduce(0) { |sum, pos| sum + @engines[pos].power }
   end
 
   def sum_of_engines_power_for_stable
