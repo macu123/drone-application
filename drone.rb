@@ -133,16 +133,16 @@ class Drone
     case movement
     when :forward
       @gyroscope.y_velocity = sum_of_engines_power(mapping_hash[:faster]) - sum_of_engines_power(mapping_hash[:slower])
-      @orientation_sensor.y_direction = movement
+      @orientation_sensor.y_direction = @gyroscope.y_velocity.positive? ? :forward : :back
     when :back
       @gyroscope.y_velocity = sum_of_engines_power(mapping_hash[:slower]) - sum_of_engines_power(mapping_hash[:faster])
-      @orientation_sensor.y_direction = movement
+      @orientation_sensor.y_direction = @gyroscope.y_velocity.positive? ? :forward : :back
     when :left
       @gyroscope.x_velocity = sum_of_engines_power(mapping_hash[:slower]) - sum_of_engines_power(mapping_hash[:faster])
-      @orientation_sensor.x_direction = movement
+      @orientation_sensor.x_direction = @gyroscope.x_velocity.positive? ? :right : :left
     when :right
       @gyroscope.x_velocity = sum_of_engines_power(mapping_hash[:faster]) - sum_of_engines_power(mapping_hash[:slower])
-      @orientation_sensor.x_direction = movement
+      @orientation_sensor.x_direction = @gyroscope.x_velocity.positive? ? :right : :left
     when :up
       @gyroscope.z_velocity = sum_of_engines_power(mapping_hash[:faster]) - sum_of_engines_power_for_stable
     when :down
