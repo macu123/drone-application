@@ -27,7 +27,7 @@ class Drone
     @status = :off
     @gyroscope = Gyroscope.new
     @orientation_sensor = OrientationSensor.new
-    @engines = Array.new( NUMS_OF_ENGINES.times.map { Engine.new } )
+    @engines = Array.new(NUMS_OF_ENGINES.times.map { Engine.new })
   end
 
   STATUSES.each do |status|
@@ -55,6 +55,11 @@ class Drone
       set_engines_power(engines_hash[:slower], low_power)
       reset_gyroscope_and_orientation
       set_gyroscope_and_orientation(movement)
+
+      # for testing purpose
+      puts orientations
+      puts velocities
+
       set_moving
     end
   end
