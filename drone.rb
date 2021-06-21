@@ -30,12 +30,6 @@ class Drone
     @engines = Array.new(NUMS_OF_ENGINES.times.map { Engine.new })
   end
 
-  STATUSES.each do |status|
-    define_method "set_#{status}" do
-      @status = status
-    end
-  end
-
   MOVEMENT_ENGINE_MAPPING.each do |movement, engines_hash|
     define_method "move_#{movement}" do |high_power: HIGH_POWER, low_power: LOW_POWER|
       return false unless high_power && low_power && (high_power > low_power)
@@ -55,12 +49,12 @@ class Drone
       set_engines_power(engines_hash[:slower], low_power)
       reset_gyroscope_and_orientation
       set_gyroscope_and_orientation(movement)
+      set_moving
 
       # for testing purpose
       puts orientations
       puts velocities
-
-      set_moving
+      puts "status: #{status}"
     end
   end
 
@@ -105,7 +99,17 @@ class Drone
     }
   end
 
+  def engines_status
+    @engines.map { |engine| engine.is_on? ? 'On' : 'Off' }
+  end
+
   private
+
+  STATUSES.each do |status|
+    define_method "set_#{status}" do
+      @status = status
+    end
+  end
 
   def set_engines_power(engines_arr, power)
     engines_arr.each do |index|
