@@ -87,16 +87,16 @@ class Drone
 
   def orientations
     {
-      x: @orientation_sensor.x_direction,
-      y: @orientation_sensor.y_direction
+      x_direction: @orientation_sensor.x_direction,
+      y_direction: @orientation_sensor.y_direction
     }
   end
 
   def velocities
     {
-      x: @gyroscope.x_velocity,
-      y: @gyroscope.y_velocity,
-      z: @gyroscope.z_velocity
+      x_velocity: @gyroscope.x_velocity,
+      y_velocity: @gyroscope.y_velocity,
+      z_velocity: @gyroscope.z_velocity
     }
   end
 
