@@ -14,7 +14,7 @@
 - In order to move upward along Z axis, all engines should have high power.
 - In order to move downward along Z axis, all engines should have low power.
 - In order to stabilize, all engines should have certain power between low and high because the drone has weight.
-- For simplicity, we preset those low, high, stable and landing powers.
+- For simplicity, we preset those low, high, stable and landing powers, we also assume power and speed are the same.
 
 ## Reference
 https://www.youtube.com/watch?v=uFui-0sTQD0
