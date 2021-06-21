@@ -33,10 +33,10 @@ class Drone
   MOVEMENT_ENGINE_MAPPING.each do |movement, engines_hash|
     define_method "move_#{movement}" do |high_power: HIGH_POWER, low_power: LOW_POWER|
       return false unless high_power && low_power && (high_power > low_power)
-      return false if (@status == :off) && (movement != :up)
+      return false if (status == :off) && (movement != :up)
 
       # one is engine break when trying to take off, the other is engine break while in the air
-      if any_engine_break? && (@status == :off)
+      if any_engine_break? && (status == :off)
         send_distress_signal
         return
       elsif any_engine_break? && (movement != :down)
@@ -77,7 +77,7 @@ class Drone
   end
 
   def tap
-    return false if @status == :off
+    return false if status == :off
 
     stabilize
   end
