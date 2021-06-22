@@ -62,10 +62,20 @@ class Drone
   end
 
   def take_off
+    return false unless status == :off
+
     move_up
   end
 
   def stabilize
+    return false if status == :off
+
+    if any_engine_break?
+      send_distress_signal
+      land
+      return
+    end
+
     set_engines_power([0, 1, 2, 3], STABLE_POWER)
     reset_gyroscope_and_orientation
     set_hovering
@@ -73,6 +83,8 @@ class Drone
 
   # Assume both drone and engines are off when landed.
   def land
+    return false if status == :off
+
     # For testing purpose
     puts 'start to land'
     move_down(low_power: LANDING_POWER)
@@ -82,8 +94,6 @@ class Drone
   end
 
   def tap
-    return false if status == :off
-
     stabilize
   end
 
