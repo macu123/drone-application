@@ -36,7 +36,7 @@ class Drone
 
   MOVEMENT_ENGINE_MAPPING.each do |movement, engines_hash|
     define_method "move_#{movement}" do |high_power: HIGH_POWER, low_power: LOW_POWER|
-      return false unless high_power && low_power && (high_power > low_power)
+      return false unless high_power && low_power && (high_power > STABLE_POWER) && (low_power < STABLE_POWER)
       return false if (status == :off) && (movement != :up)
 
       # One is engine break while taking off.
