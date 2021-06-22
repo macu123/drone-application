@@ -79,6 +79,7 @@ class Drone
     set_engines_power([0, 1, 2, 3], STABLE_POWER)
     reset_gyroscope_and_orientation
     set_hovering
+    print_all_stats
   end
 
   # Assume both drone and engines are off when landed.
@@ -86,11 +87,13 @@ class Drone
     return false if status == :off
 
     # For testing purpose
-    puts 'start to land'
+    puts 'start landing'
     move_down(low_power: LANDING_POWER)
     reset_gyroscope_and_orientation
     @engines.collect(&:turn_off)
     set_off
+    puts 'finish landing'
+    print_all_stats
   end
 
   def tap
