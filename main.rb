@@ -46,7 +46,7 @@ drone.tap
 drone.print_all_stats
 drone.print_engines_status
 
-puts 'one of engines start to break'
+puts 'One of engines start to break'
 engines = drone.instance_variable_get(:@engines)
 engines.first.turn_off
 drone.print_engines_status

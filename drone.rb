@@ -17,7 +17,7 @@ class Drone
   # First element of array is the top left engine.
   # Second element of array is the top right engine.
   # Third element of array is the bottom left engine.
-  # Fourth elemeent of array is the bottom right engine.
+  # Fourth element of array is the bottom right engine.
   MOVEMENT_ENGINE_MAPPING = {
     forward: { faster: [2, 3], slower: [0, 1] },
     left: { faster: [1, 3], slower: [0, 2] },
@@ -39,7 +39,8 @@ class Drone
       return false unless high_power && low_power && (high_power > low_power)
       return false if (status == :off) && (movement != :up)
 
-      # One is engine break when trying to take off, the other is engine break while in the air.
+      # One is engine break while taking off.
+      # The other is engine break while in the air.
       if any_engine_break? && (status == :off)
         send_distress_signal
         return
@@ -72,7 +73,7 @@ class Drone
 
   # Assume both drone and engines are off when landed.
   def land
-    # for testing purpose
+    # For testing purpose
     puts 'start to land'
     move_down(low_power: LANDING_POWER)
     reset_gyroscope_and_orientation
