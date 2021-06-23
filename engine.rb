@@ -23,6 +23,5 @@ class Engine
     return false unless (power >= 0) && (power <= 100)
 
     @power = power
-    true
   end
 end
